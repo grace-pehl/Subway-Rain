@@ -96,8 +96,40 @@ def plot_residuals(turnstile_weather, predictions):
     '''
     plt.figure()
     residuals = turnstile_weather["ENTRIESn_hourly"] - predictions
-    residuals.hist(bins=50, range=[-5000, 5000])
+    n, bins, patches = residuals.hist(bins=50, range=[-5000, 5000])
     plt.title("Residuals After Linear Regression")
+    return plt
+
+
+def plot_residuals_scatter(turnstile_weather, predictions):
+    '''
+    Plot residual for each datapoint
+    '''
+    plt.figure()
+    plt.scatter(turnstile_weather["Unnamed: 0"],
+                turnstile_weather["ENTRIESn_hourly"] - predictions)
+    plt.xlabel("Data Points")
+    plt.xlim(0, 15000)
+    plt.ylabel("Data Minus Predictions")
+    plt.ylim(-10000, 30000)
+    plt.show()
+    plt.title("Residuals After Linear Regression")
+    return plt
+
+# import scipy.stats
+
+
+def probplot_residuals(turnstile_weather, predictions):
+    '''
+    Return a probabilty plot of the residuals versus a normal distribution
+    '''
+    plt.figure()
+    scipy.stats.probplot(turnstile_weather["ENTRIESn_hourly"] - predictions,
+                         plot=plt)
+    plt.xlabel("Normal Distribution Quantiles")
+    plt.ylabel("Residuals")
+    plt.show()
+    plt.title("Probability Plot of Residuals Versus Normal Distribution")
     return plt
 
 
